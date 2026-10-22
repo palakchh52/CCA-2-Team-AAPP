@@ -1,0 +1,75 @@
+"""
+CCA-2 AI & ML I | Hugging Face Sentiment Monitor
+Student Name: Anushka
+PRN: 1302250178
+
+Run: python 03_HuggingFace_Sentiment_Monitor.py
+Optional for real Hugging Face inference:
+    pip install transformers torch
+On first real-model run, an internet connection is needed to download the model.
+If Transformers is unavailable, the script uses a clearly labelled demo fallback
+so that the assignment can still be demonstrated without downloading a model.
+"""
+STUDENT_NAME = "Anushka"
+PRN = "1302250178"
+
+TEST_REVIEWS = [
+    "The mobile banking application is easy to use.",
+    "My transaction failed and customer support did not help.",
+    "The staff were helpful and friendly.",
+    "The loan application process was confusing and slow.",
+    "The new payment feature is excellent.",
+    "I am not happy with the long waiting time.",
+    "The service was okay, nothing special.",
+]
+
+def demo_sentiment(text):
+    """Simple offline fallback for demonstrating program flow; not an ML model."""
+    positive = {"easy", "helpful", "friendly", "excellent", "good", "great", "love", "fast", "happy"}
+    negative = {"failed", "did not help", "confusing", "slow", "not happy", "bad", "poor", "long waiting"}
+    low = text.lower()
+    pos = sum(1 for word in positive if word in low)
+    neg = sum(1 for word in negative if word in low)
+    if pos > neg:
+        return {"label": "POSITIVE", "score": 0.80, "method": "offline demo fallback"}
+    if neg > pos:
+        return {"label": "NEGATIVE", "score": 0.80, "method": "offline demo fallback"}
+    return {"label": "NEUTRAL / UNCERTAIN", "score": 0.55, "method": "offline demo fallback"}
+
+def main():
+    print("=" * 60)
+    print("CCA-2: HUGGING FACE SENTIMENT MONITOR")
+    print(f"Student: {STUDENT_NAME} | PRN: {PRN}")
+    print("=" * 60)
+    classifier = None
+    try:
+        from transformers import pipeline
+        classifier = pipeline("sentiment-analysis")
+        print("Using Hugging Face Transformers sentiment-analysis pipeline.\n")
+    except Exception as exc:
+        print("Hugging Face model is unavailable in this environment.")
+        print("Using offline demo fallback so the program can still run.")
+        print("For actual Hugging Face predictions, install transformers and torch")
+        print("and run where model downloads are permitted.\n")
+
+    for number, review in enumerate(TEST_REVIEWS, start=1):
+        if classifier is not None:
+            try:
+                result = classifier(review)[0]
+                label = result["label"]
+                score = float(result["score"])
+                method = "Hugging Face model"
+            except Exception:
+                result = demo_sentiment(review)
+                label, score, method = result["label"], result["score"], result["method"]
+        else:
+            result = demo_sentiment(review)
+            label, score, method = result["label"], result["score"], result["method"]
+        print(f"{number}. Review: {review}")
+        print(f"   Sentiment: {label} | Confidence: {score:.2f} | Method: {method}")
+    print("\nProgram completed successfully.")
+    print("Note: The offline fallback is only a demonstration, not a trained ML model.")
+
+if __name__ == "__main__":
+    main()
+

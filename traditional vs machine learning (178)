@@ -1,0 +1,67 @@
+"""
+CCA-2 AI & ML I | Traditional Programming vs Machine Learning
+Student Name: Anushka
+PRN: 1302250178
+
+
+import pandas as pd
+
+STUDENT_NAME = "Anushka"
+PRN = "1302250178"
+DATA_FILE = Path(__file__).with_name("ML_Loan.xlsx")
+
+SAMPLE_DATA = [
+    {"Applicant": "Applicant A", "Income": 60000, "Credit_Score": 750, "Existing_Loan": 10000, "Loan_Approved": 1},
+    {"Applicant": "Applicant B", "Income": 30000, "Credit_Score": 600, "Existing_Loan": 25000, "Loan_Approved": 0},
+    {"Applicant": "Applicant C", "Income": 80000, "Credit_Score": 780, "Existing_Loan": 5000, "Loan_Approved": 1},
+    {"Applicant": "Applicant D", "Income": 35000, "Credit_Score": 620, "Existing_Loan": 30000, "Loan_Approved": 0},
+    {"Applicant": "Applicant E", "Income": 70000, "Credit_Score": 720, "Existing_Loan": 15000, "Loan_Approved": 1},
+    {"Applicant": "Applicant F", "Income": 40000, "Credit_Score": 650, "Existing_Loan": 25000, "Loan_Approved": 0},
+    {"Applicant": "Applicant G", "Income": 55000, "Credit_Score": 710, "Existing_Loan": 18000, "Loan_Approved": 1},
+    {"Applicant": "Applicant H", "Income": 28000, "Credit_Score": 580, "Existing_Loan": 32000, "Loan_Approved": 0},
+]
+
+def ensure_workbook():
+    if not DATA_FILE.exists():
+        pd.DataFrame(SAMPLE_DATA).to_excel(DATA_FILE, index=False)
+        print(f"Created sample Excel workbook: {DATA_FILE.name}")
+
+def traditional_decision(row):
+    # Rule-based approach: all three conditions must be satisfied.
+    if row["Income"] >= 50000 and row["Credit_Score"] >= 700 and row["Existing_Loan"] <= 20000:
+        return "Loan Approved"
+    return "Loan Rejected"
+
+def main():
+    print("=" * 62)
+    print("CCA-2: TRADITIONAL PROGRAMMING VS MACHINE LEARNING")
+    print(f"Student: {STUDENT_NAME} | PRN: {PRN}")
+    print("=" * 62)
+    ensure_workbook()
+    df = pd.read_excel(DATA_FILE)
+    required = {"Applicant", "Income", "Credit_Score", "Existing_Loan", "Loan_Approved"}
+    missing = required.difference(df.columns)
+    if missing:
+        raise ValueError(f"Excel file is missing these columns: {sorted(missing)}")
+    df = df.dropna(subset=list(required)).copy()
+
+    # Traditional rule-based decisions
+    df["Traditional_Result"] = df.apply(traditional_decision, axis=1)
+
+    # Machine-learning decision tree trained on the labelled Excel records
+    from sklearn.tree import DecisionTreeClassifier
+    feature_cols = ["Income", "Credit_Score", "Existing_Loan"]
+    X = df[feature_cols]
+    y = df["Loan_Approved"].astype(int)
+    model = DecisionTreeClassifier(random_state=42, max_depth=3)
+    model.fit(X, y)
+    df["ML_Result"] = pd.Series(model.predict(X).astype(int), index=df.index).map({1: "Loan Approved", 0: "Loan Rejected"})
+
+    print("\nResults (sample training data; not a real lending decision):")
+    print(df[["Applicant", "Income", "Credit_Score", "Existing_Loan", "Traditional_Result", "ML_Result"]].to_string(index=False))
+    print("\nNote: The ML predictions above are shown on the example records used for training.")
+    print("For a fair model evaluation, use a separate test dataset.")
+    print("\nProgram completed successfully.")
+
+if __name__ == "__main__":
+    main()
