@@ -1,0 +1,11 @@
+Task 2: Excel input file
+File: ml_input.xlsx
+Columns:
+- Hours_Studied: hours spent studying
+- Attendance_Percent: attendance percentage
+- Previous_Score: previous assessment score
+- Passed: labelled result (1 = passed, 0 = not passed)
+
+The Python program reads this file using pandas.read_excel().
+Keep ml_input.xlsx in the same folder as task1_traditional_vs_ml.py.
+The data is fictional and used only for demonstration.
