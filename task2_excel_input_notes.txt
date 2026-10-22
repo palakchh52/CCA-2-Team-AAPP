@@ -9,3 +9,9 @@ Columns:
 The Python program reads this file using pandas.read_excel().
 Keep ml_input.xlsx in the same folder as task1_traditional_vs_ml.py.
 The data is fictional and used only for demonstration.
+
+# Individual contribution
+# Student Name: Ananya jain
+# PRN: 1302250124
+# Task: Compare traditional programming and machine learning
+# Input source: Excel file
