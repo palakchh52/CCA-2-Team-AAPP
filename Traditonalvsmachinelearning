@@ -1,0 +1,45 @@
+# Traditional Programming
+income = 60000
+credit_score = 750
+existing_loan = 10000
+
+if income >= 50000 and credit_score >= 700 and existing_loan <= 20000:
+    decision = "Loan Approved"
+else:
+    decision = "Loan Rejected"
+
+print(decision)
+
+# Machine Learning - Loan Approval
+
+from sklearn.tree import DecisionTreeClassifier
+
+# Training data
+X = [
+    [60000, 750, 10000],
+    [30000, 600, 25000],
+    [80000, 780, 5000],
+    [35000, 620, 30000],
+    [70000, 720, 15000],
+    [40000, 650, 25000]
+]
+
+# 1 = Approved, 0 = Rejected
+y = [1, 0, 1, 0, 1, 0]
+
+# Create ML model
+model = DecisionTreeClassifier()
+
+# Train the model
+model.fit(X, y)
+
+# New customer
+new_customer = [[35000, 410, 52000]]
+
+# Prediction
+prediction = model.predict(new_customer)
+
+if prediction[0] == 1:
+    print("Loan Approved")
+else:
+    print("Loan Rejected")
