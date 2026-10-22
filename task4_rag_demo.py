@@ -59,3 +59,9 @@ while True:
     for item in context:
         print("-", item)
     print("\nAnswer:", answer)
+
+# Individual contribution
+# Student Name: Ananya jain
+# PRN: 1302250124
+# Task: Compare traditional programming and machine learning
+# Input source: Excel file

@@ -38,3 +38,10 @@ print(data[["Hours_Studied", "Attendance_Percent", "Previous_Score",
             "Passed", "Traditional_Prediction", "ML_Prediction"]].to_string(index=False))
 print("\nTraining-data accuracy:", round(accuracy_score(y, model.predict(X)) * 100, 2), "%")
 print("\nNote: This is a small educational example, not a real student assessment tool.")
+
+
+# Individual contribution
+# Student Name: Ananya jain
+# PRN: 1302250124
+# Task: Compare traditional programming and machine learning
+# Input source: Excel file
