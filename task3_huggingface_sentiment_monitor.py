@@ -30,3 +30,8 @@ while True:
         continue
     result = sentiment_analyzer(text)[0]
     print(f"Sentiment: {result['label']} | Confidence: {result['score']:.2%}")
+#Individual contribution
+# Student Name: [Palak Chhablani]
+# PRN: [1302250701]
+# Task: Compare traditional programming and machine learning
+# Input source: Excel file
