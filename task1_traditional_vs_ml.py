@@ -40,4 +40,8 @@ print("\nTraining-data accuracy:", round(accuracy_score(y, model.predict(X)) * 1
 print("\nNote: This is a small educational example, not a real student assessment tool.")
 
 
-
+# Individual contribution
+# Student Name: Ananya jain
+# PRN: 1302250124
+# Task: Compare traditional programming and machine learning
+# Input source: Excel file
