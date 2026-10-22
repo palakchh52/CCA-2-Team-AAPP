@@ -1,0 +1,29 @@
+"""
+CCA-2 AI & ML I | Excel Input Dataset Reader
+Student Name: Anushka
+PRN:1302250178
+
+Run: python 02_Read_Excel_Dataset.py
+Dependencies: pandas, openpyxl
+"""
+from pathlib import Path
+import pandas as pd
+
+STUDENT_NAME = "Anushka"
+PRN = "1302250178"
+DATA_FILE = Path(__file__).with_name("ML_Loan.xlsx")
+
+def main():
+    print("CCA-2: READING LOAN DATA FROM EXCEL")
+    print(f"Student: {STUDENT_NAME} | PRN: {PRN}")
+    if not DATA_FILE.exists():
+        raise FileNotFoundError("ML_Loan.xlsx must be in the same folder as this script.")
+    df = pd.read_excel(DATA_FILE)
+    print("\nColumn names:", ", ".join(str(c) for c in df.columns))
+    print("\nFirst five rows:")
+    print(df.head().to_string(index=False))
+    print(f"\nRows: {len(df)} | Columns: {len(df.columns)}")
+    print("\nProgram completed successfully.")
+
+if __name__ == "__main__":
+    main()
