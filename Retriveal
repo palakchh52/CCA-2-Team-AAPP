@@ -1,0 +1,72 @@
+"""
+CCA-2 AI & ML I | Retrieval-Augmented Generation (RAG) demonstration
+Student Name: Anushka
+PRN: 1302250178
+
+Run: python 04_Retrieval_Augmented_Generation.py
+Uses a small local college knowledge base and keyword retrieval; no API key needed.
+This is a beginner-friendly retrieval demonstration, not a generative LLM.
+"""
+import re
+
+STUDENT_NAME = "Anushka"
+PRN = "1302250178"
+
+COLLEGE_RULES = [
+    "Students must maintain at least 75% attendance.",
+    "There are two internal tests during the semester.",
+    "Students can borrow up to three books from the library.",
+    "Students must carry their valid examination ID card.",
+    "Assignments must be submitted before the announced deadline.",
+    "Students need at least 15 days of preparation leave before final exams.",
+    "Students should contact the department office for timetable changes.",
+    "Late assignment submissions require approval from the concerned faculty member.",
+    "Students should keep their college identity card visible on campus when requested.",
+    "Library books must be returned by the due date to avoid late penalties.",
+]
+
+QUESTIONS = [
+    "How many days of preparation leave are provided?",
+    "What is the minimum attendance requirement?",
+    "How many books can a student borrow?",
+    "What should students carry to the examination?",
+    "How many internal tests are held?",
+    "What happens if an assignment is submitted late?",
+    "Where should students ask about timetable changes?",
+    "What is the rule for returning library books?",
+]
+
+STOP_WORDS = {"what", "is", "the", "a", "an", "are", "of", "to", "how", "many", "can", "do", "students", "student", "should", "for", "about", "if", "and", "be", "provided", "held"}
+
+def tokens(text):
+    return {word for word in re.findall(r"[a-z0-9]+", text.lower()) if word not in STOP_WORDS}
+
+def retrieve(question):
+    q_tokens = tokens(question)
+    ranked = []
+    for rule in COLLEGE_RULES:
+        overlap = q_tokens.intersection(tokens(rule))
+        score = len(overlap)
+        if score:
+            ranked.append((score, rule))
+    ranked.sort(key=lambda item: item[0], reverse=True)
+    if not ranked:
+        return "I could not find this information in the college knowledge base."
+    best_score = ranked[0][0]
+    best = [rule for score, rule in ranked if score == best_score]
+    return " ".join(best[:2])
+
+def main():
+    print("=" * 60)
+    print("CCA-2: RETRIEVAL-AUGMENTED GENERATION (RAG)")
+    print(f"Student: {STUDENT_NAME} | PRN: {PRN}")
+    print("=" * 60)
+    print("\nKnowledge base contains", len(COLLEGE_RULES), "college rules.")
+    for i, question in enumerate(QUESTIONS, start=1):
+        print(f"\n{i}. Question: {question}")
+        print("   Retrieved answer:", retrieve(question))
+    print("\nProgram completed successfully.")
+    print("Note: This example retrieves relevant rules using keyword overlap; it does not call an LLM.")
+
+if __name__ == "__main__":
+    main()
